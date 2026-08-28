@@ -3,7 +3,6 @@ import { StrategyCallRequest } from '../types';
 import { X, Check, Calendar, MessageSquare, Mail, Sparkles, Lock, ArrowRight } from 'lucide-react';
 import { FOOTER_COPY } from '../data';
 
-// Google Apps Script Web App endpoint — handles email delivery + notification.
 const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyOMIQMHCuXKEtCkFXd7OElxdogsMqzFmzJJk_F_8Itu1qU77MHdS6gKvW6PHwzLsB4/exec';
 
 interface BookingModalProps {
@@ -23,7 +22,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     projectScope: '',
     timeline: 'Within 2-4 weeks',
     budget: '$1,500 - $3,500',
-    website: '' // honeypot — real users never see or fill this
+    website: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,8 +63,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     setSubmitError(false);
 
     try {
-      // text/plain avoids a CORS preflight request, which Apps Script
-      // Web Apps don't handle by default.
       await fetch(FORM_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -87,13 +84,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-950/80 backdrop-blur-sm animate-fade-in">
-      <div 
+      <div
         className="relative w-full max-w-xl bg-[#0f172a] rounded-3xl border border-slate-700 shadow-2xl p-6 sm:p-8 overflow-hidden my-8"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
-        {/* Close Button */}
         <button
           onClick={resetAndClose}
           className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500"
@@ -113,11 +109,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               Book Your 15-Minute Strategy Call
             </h3>
             <p className="text-sm text-slate-300 mb-6 leading-relaxed">
-              We'll look at your current website or offer, pinpoint where visitors drop off, and lay out an exact blueprint for a site that delivers bookings.
+              We will look at your current website or offer, pinpoint where visitors drop off, and lay out an exact blueprint for a site that delivers bookings.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-              {/* Honeypot — hidden from real users, catches bots that fill every field */}
               <div style={{ position: 'absolute', left: '-9999px' }} aria-hidden="true">
                 <label htmlFor="website">Leave this field empty</label>
                 <input
@@ -228,38 +223,20 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
                 <p className="text-center text-xs text-slate-400 mt-2.5 flex items-center justify-center gap-1.5">
                   <Lock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>✓ 100% Free ✓ No obligation ✓ Your info is never shared</span>
+                  <span>Free. No obligation. Your info is never shared.</span>
                 </p>
 
                 {submitError && (
                   <div className="mt-4 p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-xs text-rose-200 text-center">
-                    Something went wrong sending your request. Please try again, or message directly on{' '}
-                    
-                      href={`https://wa.me/${FOOTER_COPY.whatsappRaw}?text=Hi%20Marquis,%20my%20strategy%20call%20form%20didn't%20submit%20-%20here%20are%20my%20details`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-emerald-400 font-semibold hover:underline"
-                    >
-                      WhatsApp
-                    </a>
-                    .
+                    Something went wrong sending your request. Please try again, or message directly on WhatsApp.
                   </div>
                 )}
               </div>
             </form>
 
-            {/* Instant WhatsApp Option */}
             <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
               <span>Need to talk sooner?</span>
-              
-                href={`https://wa.me/${FOOTER_COPY.whatsappRaw}?text=Hi%20Marquis,%20I'd%20like%20to%20schedule%20a%20strategy%20call%20for%20my%20business%20website`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-emerald-400 font-semibold hover:underline flex items-center gap-1"
-              >
-                <MessageSquare className="w-3.5 h-3.5" />
-                <span>Message on WhatsApp</span>
-              </a>
+              <span className="text-emerald-400 font-semibold">Message on WhatsApp below</span>
             </div>
           </div>
         ) : (
@@ -272,7 +249,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               Strategy Request Received!
             </h3>
             <p className="text-sm text-slate-300 max-w-md mx-auto mb-6 leading-relaxed">
-              Thanks <span className="text-slate-100 font-semibold">{formData.name}</span>! Marquis is reviewing your project details. You'll receive a confirmation email and scheduling invite at <span className="text-amber-400 font-medium">{formData.email}</span> within 24 hours.
+              Thanks <span className="text-slate-100 font-semibold">{formData.name}</span>! Marquis is reviewing your project details. You will receive a confirmation email and scheduling invite at <span className="text-amber-400 font-medium">{formData.email}</span> within 24 hours.
             </p>
 
             <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-left text-xs text-slate-300 space-y-2 mb-6 max-w-md mx-auto">
@@ -292,15 +269,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               >
                 Back to Site
               </button>
-              
-                href={`https://wa.me/${FOOTER_COPY.whatsappRaw}?text=Hi%20Marquis,%20I%20just%20submitted%20my%20strategy%20request%20(${formData.name})`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-sm transition-colors flex items-center justify-center gap-2"
-              >
+              <span className="px-6 py-3 rounded-xl bg-emerald-600 text-slate-950 font-bold text-sm flex items-center justify-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 <span>Chat Instantly on WhatsApp</span>
-              </a>
+              </span>
             </div>
           </div>
         )}
@@ -308,4 +280,4 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     </div>
   );
 };
-             
+           
