@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+
+      import React, { useState, useEffect } from 'react';
 import { StrategyCallRequest } from '../types';
 import { X, Check, Calendar, MessageSquare, Mail, Sparkles, Lock, ArrowRight } from 'lucide-react';
 import { FOOTER_COPY } from '../data';
 
-const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyOMIQMHCuXKEtCkFXd7OElxdogsMqzFmzJJk_F_8Itu1qU77MHdS6gKvW6PHwzLsB4/exec';
+const FORM_ENDPOINT = 'https:' + '//script.google.com/macros/s/AKfycbyOMIQMHCuXKEtCkFXd7OElxdogsMqzFmzJJk_F_8Itu1qU77MHdS6gKvW6PHwzLsB4/exec';
+const WA_BASE = 'https:' + '//wa.me/';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -63,8 +65,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     setSubmitError(false);
 
     try {
+      // no-cors avoids the browser blocking the response due to Google's
+      // redirect chain on Apps Script Web Apps — we can't read the response
+      // body this way, but the request itself still reaches the script.
       await fetch(FORM_ENDPOINT, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(formData)
       });
@@ -228,7 +234,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
                 {submitError && (
                   <div className="mt-4 p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-xs text-rose-200 text-center">
-                    Something went wrong sending your request. Please try again, or message directly on WhatsApp.
+                    Something went wrong sending your request. Please try again, or message directly on{' '}
+                    <a href={WA_BASE + FOOTER_COPY.whatsappRaw + '?text=Hi%20Marquis%2C%20my%20strategy%20call%20form%20didnt%20submit'} target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-semibold hover:underline">
+                      WhatsApp
+                    </a>
+                    .
                   </div>
                 )}
               </div>
@@ -236,7 +246,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
             <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
               <span>Need to talk sooner?</span>
-              <span className="text-emerald-400 font-semibold">Message on WhatsApp below</span>
+              <a href={WA_BASE + FOOTER_COPY.whatsappRaw + '?text=Hi%20Marquis%2C%20Id%20like%20to%20schedule%20a%20strategy%20call'} target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-semibold hover:underline flex items-center gap-1">
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Message on WhatsApp</span>
+              </a>
             </div>
           </div>
         ) : (
@@ -269,10 +282,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               >
                 Back to Site
               </button>
-              <span className="px-6 py-3 rounded-xl bg-emerald-600 text-slate-950 font-bold text-sm flex items-center justify-center gap-2">
+              <a href={WA_BASE + FOOTER_COPY.whatsappRaw + '?text=Hi%20Marquis%2C%20I%20just%20submitted%20my%20strategy%20request'} target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-sm transition-colors flex items-center justify-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 <span>Chat Instantly on WhatsApp</span>
-              </span>
+              </a>
             </div>
           </div>
         )}
@@ -280,4 +293,3 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     </div>
   );
 };
-           
