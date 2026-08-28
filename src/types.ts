@@ -4,6 +4,7 @@ export interface StrategyCallRequest {
   projectScope: string;
   timeline?: string;
   budget?: string;
+  website?: string; // honeypot field — must stay empty; hidden from real users via CSS
 }
 
 export interface FAQItem {
