@@ -84,10 +84,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy }) => {
             >
               Privacy Policy
             </button>
-            <span className="flex items-center gap-1 text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              SuperwitSites v2.1 Verified
-            </span>
           </div>
         </div>
       </div>

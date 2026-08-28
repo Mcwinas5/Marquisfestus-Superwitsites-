@@ -8,10 +8,12 @@ export const HERO_COPY = {
   fearBuster: "Your info is safe. I hate spam too."
 };
 
+export const AVAILABILITY_STATUS = "Available for 2 Q1 Builds";
+
 export const CREDIBILITY_STATS = [
   { value: "1 Year", label: "Building Conversion Sites" },
-  { value: "6 Clients", label: "Delivered & Scaled" },
-  { value: "5,000+", label: "Builder & Founder Community" }
+  { value: "6 Clients", label: "Delivered" },
+  { value: "5,000+", label: "Community" }
 ];
 
 export const PROBLEM_COPY = {
@@ -38,10 +40,10 @@ export const SOLUTION_STEPS: SolutionStep[] = [
 ];
 
 export const BEFORE_AFTER_COPY = {
-  headline: "From 5 Bookings a Month to Over 15 — In 8 Weeks",
-  body: "SmileWell Dental Clinic was getting roughly 5 bookings a month from their old website — barely moving the needle. Within 2 months of rebuilding their site around conversion, not just appearance, that jumped to over 15 bookings a month. That's the SuperwitSites approach: not a nicer-looking site — a site engineered to convert.",
+  headline: "From 5 Bookings a Month to Over 15 — In 6 Weeks",
+  body: "SmileWell Dental Clinic was getting roughly 5 bookings a month from their old website — barely moving the needle. Within 6 weeks of rebuilding their site around conversion, not just appearance, that jumped to over 15 bookings a month. That's the SuperwitSites approach: not a nicer-looking site — a site engineered to convert.",
   clientName: "SmileWell Dental Clinic",
-  timeline: "8 Weeks",
+  timeline: "6 Weeks",
   beforeStat: "5 / mo",
   beforeLabel: "Old site monthly bookings",
   afterStat: "15+ / mo",
@@ -74,13 +76,13 @@ export const RECENT_BUILDS: ProjectBuild[] = [
   {
     id: "meridian",
     title: "MÉRIDIAN",
-    category: "Luxury & Lifestyle Commerce",
+    category: "Luxury Spa (US)",
     isDemo: false,
     tag: "Live Client Build",
-    description: "High-end bespoke retail & reservation architecture designed to turn high-intent luxury shoppers into verified orders and appointments.",
+    description: "Luxury Spa (US) — high-end spa consultation & booking architecture.",
     metric: "3.8x Mobile Checkout Completion",
     liveUrl: "https://meridian-demo.superwitstech.com",
-    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop"
+    imageUrl: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: "smileflow",
@@ -96,11 +98,11 @@ export const RECENT_BUILDS: ProjectBuild[] = [
   {
     id: "tonia-lifestyle",
     title: "Tonia Lifestyle Hub",
-    category: "Executive Coaching & Wellness",
+    category: "Ecommerce Brand",
     isDemo: false,
     tag: "Live Client Build",
-    description: "High-converting brand platform for a prominent wellness practitioner featuring interactive program matching and automated consultation scheduling.",
-    metric: "4.2x Discovery Call Bookings",
+    description: "Ecommerce Brand — conversion-focused storefront rebuild.",
+    metric: "+30% Checkout Completion, +20% Repeat Purchases (45 days)",
     liveUrl: "https://tonia-lifestyle.superwitstech.com",
     imageUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop"
   }

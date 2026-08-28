@@ -51,7 +51,7 @@ export const BeforeAfterStory: React.FC<BeforeAfterStoryProps> = ({ onOpenBookin
             <div className="p-5 rounded-xl bg-slate-950/80 border border-emerald-500/40 flex flex-col justify-between shadow-lg relative">
               <div className="absolute top-4 right-4 hidden sm:flex items-center gap-1 text-[11px] font-bold text-amber-400 bg-amber-950/60 border border-amber-800/60 px-2 py-0.5 rounded">
                 <Activity className="w-3 h-3 text-amber-400" />
-                8-Week Delivery
+                6-Week Delivery
               </div>
               <div>
                 <span className="inline-block px-2.5 py-1 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 text-xs font-bold uppercase tracking-wider mb-3">

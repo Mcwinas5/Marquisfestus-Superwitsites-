@@ -72,7 +72,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSubmitRequest, onOpe
             <div className="relative w-full max-w-sm sm:max-w-md rounded-2xl overflow-hidden bg-slate-900 border border-slate-700/80 shadow-2xl p-3 sm:p-4">
               <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-950">
                 <img
-                  src="https://i.imgur.com/g9dEZ4B.jpeg"
+                  src="https://i.imgur.com/0dAReMB.png"
                   alt="Marquis Festus — Conversion Website Designer"
                   className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-500"
                   loading="eager"

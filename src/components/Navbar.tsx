@@ -1,5 +1,6 @@
 import React from 'react';
-import { Calendar, ShieldCheck, Sparkles } from 'lucide-react';
+import { AVAILABILITY_STATUS } from '../data';
+import { Calendar } from 'lucide-react';
 
 interface NavbarProps {
   onOpenBooking: () => void;
@@ -35,12 +36,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span>Available for 2 Q1 Builds</span>
+            <span>{AVAILABILITY_STATUS}</span>
           </div>
 
           <button
             onClick={onOpenBooking}
-            className="min-h-[44px] px-4 sm:px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-semibold text-sm transition-colors flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="min-h-[44px] px-4 sm:px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-semibold text-sm transition-colors flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer"
             aria-label="Schedule Call"
           >
             <Calendar className="w-4 h-4 text-amber-400" />
