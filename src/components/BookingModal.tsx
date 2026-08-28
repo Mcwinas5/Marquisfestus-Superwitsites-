@@ -3,6 +3,9 @@ import { StrategyCallRequest } from '../types';
 import { X, Check, Calendar, MessageSquare, Mail, Sparkles, Lock, ArrowRight } from 'lucide-react';
 import { FOOTER_COPY } from '../data';
 
+// Google Apps Script Web App endpoint — handles email delivery + notification.
+const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyOMIQMHCuXKEtCkFXd7OElxdogsMqzFmzJJk_F_8Itu1qU77MHdS6gKvW6PHwzLsB4/exec';
+
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -19,9 +22,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     email: '',
     projectScope: '',
     timeline: 'Within 2-4 weeks',
-    budget: '$1,500 - $3,500'
+    budget: '$1,500 - $3,500',
+    website: '' // honeypot — real users never see or fill this
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -50,15 +56,32 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) {
+    if (!validate()) return;
+
+    setIsSubmitting(true);
+    setSubmitError(false);
+
+    try {
+      // text/plain avoids a CORS preflight request, which Apps Script
+      // Web Apps don't handle by default.
+      await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(formData)
+      });
       setIsSubmitted(true);
+    } catch (err) {
+      setSubmitError(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const resetAndClose = () => {
     setIsSubmitted(false);
+    setSubmitError(false);
     onClose();
   };
 
@@ -94,6 +117,20 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+              {/* Honeypot — hidden from real users, catches bots that fill every field */}
+              <div style={{ position: 'absolute', left: '-9999px' }} aria-hidden="true">
+                <label htmlFor="website">Leave this field empty</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formData.website}
+                  onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                />
+              </div>
+
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Full Name <span className="text-amber-400">*</span>
@@ -182,23 +219,39 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               <div className="pt-3">
                 <button
                   type="submit"
-                  className="w-full min-h-[52px] px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-base shadow-lg shadow-amber-500/25 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  disabled={isSubmitting}
+                  className="w-full min-h-[52px] px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-base shadow-lg shadow-amber-500/25 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <span>Confirm Strategy Call Request</span>
-                  <ArrowRight className="w-5 h-5 text-slate-950" />
+                  <span>{isSubmitting ? 'Sending...' : 'Confirm Strategy Call Request'}</span>
+                  {!isSubmitting && <ArrowRight className="w-5 h-5 text-slate-950" />}
                 </button>
 
                 <p className="text-center text-xs text-slate-400 mt-2.5 flex items-center justify-center gap-1.5">
                   <Lock className="w-3.5 h-3.5 text-slate-400" />
                   <span>✓ 100% Free ✓ No obligation ✓ Your info is never shared</span>
                 </p>
+
+                {submitError && (
+                  <div className="mt-4 p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-xs text-rose-200 text-center">
+                    Something went wrong sending your request. Please try again, or message directly on{' '}
+                    
+                      href={`https://wa.me/${FOOTER_COPY.whatsappRaw}?text=Hi%20Marquis,%20my%20strategy%20call%20form%20didn't%20submit%20-%20here%20are%20my%20details`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-400 font-semibold hover:underline"
+                    >
+                      WhatsApp
+                    </a>
+                    .
+                  </div>
+                )}
               </div>
             </form>
 
             {/* Instant WhatsApp Option */}
             <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
               <span>Need to talk sooner?</span>
-              <a
+              
                 href={`https://wa.me/${FOOTER_COPY.whatsappRaw}?text=Hi%20Marquis,%20I'd%20like%20to%20schedule%20a%20strategy%20call%20for%20my%20business%20website`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -239,7 +292,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               >
                 Back to Site
               </button>
-              <a
+              
                 href={`https://wa.me/${FOOTER_COPY.whatsappRaw}?text=Hi%20Marquis,%20I%20just%20submitted%20my%20strategy%20request%20(${formData.name})`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -255,3 +308,4 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     </div>
   );
 };
+             
